@@ -1,0 +1,38 @@
+{
+  "name": "seo-audit-backend",
+  "version": "1.0.0",
+  "description": "SEO Website Audit Report Generator API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "seo",
+    "audit",
+    "website-analysis"
+  ],
+  "author": "Business2Virtual",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "puppeteer": "^21.6.1",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "pdfkit": "^0.13.0",
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@google/genai": "^0.2.0",
+    "handlebars": "^4.7.8",
+    "nodemailer": "^6.9.9",
+    "@getbrevo/brevo": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

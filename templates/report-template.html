@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEO Strategy Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #2563eb;
+            --secondary: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-gray: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            color: #334155;
+            margin: 0;
+            padding: 20px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            background: white;
+            margin: 0 auto 20px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            .page:last-child { page-break-after: avoid; }
+        }
+
+        .page-content {
+            min-height: 257mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area { flex: 1; }
+        .no-break { page-break-inside: avoid; break-inside: avoid; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--bg-gray);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .brand-logo{
+            display: flex;
+            align-items: center;
+        }
+        .brand-logo img {
+            height: 40px; /* Adjust based on your logo */
+            width: auto;
+        }
+        .brand-title { font-size: 20px; font-weight: 800; color: var(--secondary); letter-spacing: -0.5px; }
+        .meta-data { text-align: right; font-size: 11px; color: #64748b; }
+        .meta-url { font-size: 14px; font-weight: 600; color: var(--primary); display: block; margin-bottom: 2px; }
+
+        .hero-card {
+            background: var(--secondary);
+            border-radius: 16px;
+            padding: 35px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+        }
+        .score-label .grade { font-size: 36px; font-weight: 700; display: block; margin-bottom: 5px; }
+        .score-label .sub { opacity: 0.8; font-size: 14px; font-weight: 500; }
+
+        .circular-chart { width: 130px; height: 130px; }
+        .circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 2.5; }
+        .circle { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+        .percentage { fill: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 0.5em; text-anchor: middle; }
+        
+        .stroke-green { stroke: var(--success); }
+        .stroke-orange { stroke: var(--warning); }
+        .stroke-red { stroke: var(--danger); }
+
+        .summary-box {
+            background: #eff6ff;
+            border-left: 5px solid var(--primary);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 15px; font-weight: 700; margin: 0 0 12px 0; color: var(--secondary);
+            display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .text-content { 
+            font-size: 13px; 
+            line-height: 1.8; 
+            color: #475569; 
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .analysis-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            page-break-inside: avoid;
+        }
+        .analysis-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .analysis-name { font-weight: 700; font-size: 14px; color: var(--secondary); }
+        .analysis-badge { 
+            font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;
+        }
+        .badge-critical { background: #fee2e2; color: #991b1b; }
+        .badge-high { background: #ffedd5; color: #9a3412; }
+        .badge-medium { background: #f1f5f9; color: #475569; }
+
+        .test-results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .test-stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .test-stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        .test-stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-green { color: var(--success); }
+        .stat-orange { color: var(--warning); }
+        .stat-red { color: var(--danger); }
+
+        .plan-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+            margin-bottom: 25px;
+            page-break-inside: avoid;
+        }
+        .plan-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            border-top: 4px solid #ccc;
+        }
+        .border-green { border-top-color: var(--success); }
+        .border-orange { border-top-color: var(--warning); }
+        .border-red { border-top-color: var(--danger); }
+
+        .list-group { margin: 0; padding: 0; list-style: none; }
+        .list-item { 
+            font-size: 11px;
+            margin-bottom: 8px;
+            padding-left: 14px;
+            position: relative;
+            line-height: 1.4;
+            color: #475569;
+        }
+        .list-item::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .metric-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+        .metric-info { width: 45%; padding-right: 15px; }
+        .metric-name { font-size: 13px; font-weight: 600; color: var(--secondary); display: block; }
+        .metric-desc { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        
+        .metric-visual { flex: 1; display: flex; align-items: center; gap: 12px; }
+        .progress-bg { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        .progress-bar { height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .metric-score { font-size: 13px; font-weight: 700; width: 35px; text-align: right; }
+
+        .bg-green { background: var(--success); }
+        .text-green { color: var(--success); }
+        .bg-orange { background: var(--warning); }
+        .text-orange { color: var(--warning); }
+        .bg-red { background: var(--danger); }
+        .text-red { color: var(--danger); }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            border-radius: 12px;
+            padding: 30px;
+            color: white;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+        .cta-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .cta-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .cta-contact {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .cta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #94a3b8;
+        }
+
+        .checks-list {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            page-break-inside: avoid;
+        }
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .icon-pass { background: #d1fae5; color: var(--success); }
+        .icon-warn { background: #fed7aa; color: var(--warning); }
+        .icon-fail { background: #fee2e2; color: var(--danger); }
+        .check-content { flex: 1; }
+        .check-name { font-weight: 600; font-size: 13px; color: var(--secondary); margin-bottom: 4px; }
+        .check-message { font-size: 11px; color: #64748b; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <div class="page-content">
+            <div class="header">
+                <div class="brand-logo">
+                <img src="https://business2virtual.com/wp-content/uploads/2023/02/cropped-B2V-Favicon.png" alt="Business2Virtual Logo">
+                <div class="brand-title">Business2Virtual</div>
+            </div>
+                <div class="brand-title">SEO Audit Report</div>
+                <div class="meta-data">
+                    <span class="meta-url">{{url}}</span>
+                    <span>Generated: {{date}}</span>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="hero-card no-break">
+                    <div class="score-label">
+                        <span class="grade">{{overallStatus}}</span>
+                        <span class="sub">Overall SEO Health Score</span>
+                    </div>
+                    
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        <path class="circle {{scoreStrokeClass}}" stroke-dasharray="{{scoreDashArray}}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        <text x="18" y="20.35" class="percentage">{{overallScore}}%</text>
+                    </svg>
+                </div>
+
+                <div class="summary-box no-break">
+                    <div class="section-title">📋 Executive Summary</div>
+                    <div class="text-content">{{executiveSummary}}</div>
+                </div>
+
+                <div class="test-results-grid no-break">
+                    <div class="test-stat-card">
+                        <div class="test-stat-number stat-green">{{passedCount}}</div>
+                        <div class="test-stat-label">Passed</div>
+                    </div>
+                    <div class="test-stat-card">
+                        <div class="test-stat-number stat-orange">{{warningCount}}</div>
+                        <div class="test-stat-label">Warnings</div>
+                    </div>
+                    <div class="test-stat-card">
+                        <div class="test-stat-number stat-red">{{failedCount}}</div>
+                        <div class="test-stat-label">Failed</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>Business2Virtual | Professional SEO Services</span>
+                <span>Page 1</span>
+            </div>
+        </div>
+    </div>
+
+     <div class="page">
+        <div class="page-content">
+            <div class="header">
+                <div class="brand-title">Detailed Test Results</div>
+                <div class="meta-data">All SEO Checks</div>
+            </div>
+
+            <div class="content-area">
+                <div class="checks-list">
+                    {{#each allChecks}}
+                    <div class="check-item">
+                        <div class="check-icon {{this.iconClass}}">{{this.icon}}</div>
+                        <div class="check-content">
+                            <div class="check-name">{{this.name}} ({{this.score}}/100)</div>
+                            <div class="check-message">{{this.message}}</div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>{{url}}</span>
+                <span>Page 2</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-content">
+            <div class="header">
+                <div class="brand-title">Issues Detected</div>
+                <div class="meta-data">Needs Attention</div>
+            </div>
+
+            <div class="content-area">
+                {{#each detailedAnalysis}}
+                <div class="analysis-card">
+                    <div class="analysis-header">
+                        <div class="analysis-name">{{this.checkName}}</div>
+                        <div class="analysis-badge {{this.badgeClass}}">{{this.priority}}</div>
+                    </div>
+                    <div class="text-content" style="font-size: 12px;">{{this.explanation}}</div>
+                </div>
+                {{/each}}
+            </div>
+
+            <div class="footer">
+                <span>{{url}}</span>
+                <span>Page 3</span>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <div class="page">
+        <div class="page-content">
+            <div class="header">
+                <div class="brand-title">Action Plan & Strategy</div>
+                <div class="meta-data">Prioritized Recommendations</div>
+            </div>
+
+            <div class="content-area">
+                <div class="plan-grid">
+                    <div class="plan-card border-green">
+                        <div class="section-title" style="font-size: 12px; color: var(--success);">⚡ Quick Wins</div>
+                        <ul class="list-group">
+                            {{#each quickWins}}
+                            <li class="list-item">{{this}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-card border-orange">
+                        <div class="section-title" style="font-size: 12px; color: var(--warning);">📊 Medium Term</div>
+                        <ul class="list-group">
+                            {{#each mediumTerm}}
+                            <li class="list-item">{{this}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                    
+                    <div class="plan-card border-red">
+                        <div class="section-title" style="font-size: 12px; color: var(--danger);">🎯 Long Term</div>
+                        <ul class="list-group">
+                            {{#each longTerm}}
+                            <li class="list-item">{{this}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="analysis-card" style="background: var(--secondary); border: none; color: white;">
+                    <div class="section-title" style="color: white; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;">
+                        🌍 Industry Context
+                    </div>
+                    <div class="text-content" style="color: #cbd5e1;">{{industryInsights}}</div>
+                </div>
+
+                <div class="analysis-card">
+                    <div class="section-title">💬 Content Optimization</div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <div style="font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Suggested Title</div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--primary); margin-top: 4px;">{{metaTitle}}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Suggested Description</div>
+                            <div style="font-size: 12px; color: #334155; margin-top: 4px;">{{metaDescription}}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border);">
+                        <div style="font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: 700;">Strategy Note</div>
+                        <div style="font-size: 12px; font-style: italic; margin-top: 4px; color: #475569;">{{contentStrategy}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>{{url}}</span>
+                <span>Page 4</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-content">
+            <div class="header">
+                <div class="brand-title">Technical Audit</div>
+                <div class="meta-data">Detailed Metrics</div>
+            </div>
+
+            <div class="content-area">
+                <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 30px;">
+                    {{#each metrics}}
+                    <div class="metric-row">
+                        <div class="metric-info">
+                            <span class="metric-name">{{this.name}}</span>
+                            <span class="metric-desc">{{this.description}}</span>
+                        </div>
+                        <div class="metric-visual">
+                            <div class="progress-bg"><div class="progress-bar {{this.barClass}}" style="width: {{this.score}}%"></div></div>
+                            <span class="metric-score {{this.textClass}}">{{this.score}}</span>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>{{url}}</span>
+                <span>Page 5</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-content">
+            <div class="header">
+                <div class="brand-title">Next Steps</div>
+                <div class="meta-data">Let's Improve Your SEO</div>
+            </div>
+
+            <div class="content-area">
+                <div class="cta-section">
+                    <div class="cta-title">Ready to Boost Your Rankings?</div>
+                    <div class="cta-subtitle">Let Business2Virtual help you implement these recommendations and dominate search results</div>
+                    
+                    <div class="cta-contact">
+                        <div class="cta-item">
+                            <span>🌐</span>
+                            <span>business2virtual.com</span>
+                        </div>
+                        <div class="cta-item">
+                            <span>📧</span>
+                            <span>info@business2virtual.com</span>
+                        </div>
+                        <div class="cta-item">
+                            <span>📞</span>
+                            <span>Contact us for a free consultation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-card" style="background: #f8fafc;">
+                    <div class="section-title" style="color: var(--primary);">📈 What We Offer</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px; color: var(--secondary);">✓ Technical SEO Optimization</div>
+                            <div style="font-size: 12px; color: #64748b;">Fix core web vitals, improve page speed, and enhance technical performance</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px; color: var(--secondary);">✓ Content Strategy</div>
+                            <div style="font-size: 12px; color: #64748b;">Develop SEO-optimized content that ranks and converts</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px; color: var(--secondary);">✓ On-Page Optimization</div>
+                            <div style="font-size: 12px; color: #64748b;">Perfect your meta tags, headings, and content structure</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px; color: var(--secondary);">✓ Ongoing Monitoring</div>
+                            <div style="font-size: 12px; color: #64748b;">Track progress and continuously improve your rankings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px; padding: 30px;">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--secondary); margin-bottom: 10px;">
+                        Thank You for Trusting Business2Virtual
+                    </div>
+                    <div style="font-size: 13px; color: #64748b;">
+                        This report was generated automatically using our advanced SEO analysis tools.<br>
+                        For questions or to discuss implementation, please contact us.
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>© 2026 Business2Virtual | All Rights Reserved</span>
+                <span>End of Report</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
