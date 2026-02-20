@@ -49,7 +49,7 @@ class HTMLPDFGenerator {
       const template = Handlebars.compile(templateSource);
       const html = template(templateData);
 
-      // Generate PDF using Puppeteer
+      // Generate PDF using Puppeteer — optimized for Render
       const browser = await puppeteer.launch({
         headless: "new",
         args: [
@@ -57,9 +57,15 @@ class HTMLPDFGenerator {
           "--disable-setuid-sandbox",
           "--disable-dev-shm-usage",
           "--disable-gpu",
-          "--single-process", // Required on Render free tier
+          "--disable-software-rasterizer",
           "--disable-extensions",
+          "--single-process",
+          "--no-first-run",
         ],
+        executablePath:
+          process.env.NODE_ENV === "production"
+            ? "/usr/bin/chromium-browser"
+            : puppeteer.executablePath(),
       });
 
       const page = await browser.newPage();

@@ -4,7 +4,9 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: npm install
+    buildCommand: |
+      apt-get update && apt-get install -y chromium-browser
+      npm install
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
@@ -12,8 +14,13 @@ services:
       - key: PORT
         value: 10000
       - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
-        value: false
-      # Set these in Render dashboard — never commit real values
+        value: true
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: /usr/bin/chromium-browser
+      # Optimize memory usage
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=460
+      # API keys - set these in Render dashboard
       - key: GEMINI_API_KEY
         sync: false
       - key: AI_PROVIDER

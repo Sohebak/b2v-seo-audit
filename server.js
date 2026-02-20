@@ -111,11 +111,17 @@ app.post(
 
     const { url, email } = req.body;
 
+    // Normalize URL — add https:// if missing
+    let normalizedUrl = url.trim();
+    if (!/^https?:\/\//i.test(normalizedUrl)) {
+      normalizedUrl = "https://" + normalizedUrl;
+    }
+
     try {
-      console.log(`New audit request: ${url} from ${email}`);
+      console.log(`New audit request: ${normalizedUrl} from ${email}`);
 
       // Run SEO audit
-      const auditor = new SEOAuditor(url);
+      const auditor = new SEOAuditor(normalizedUrl);
       const auditResults = await auditor.runAudit();
 
       // Enhance with AI insights (if API key is available)
@@ -183,7 +189,7 @@ app.post(
             ? `Audit complete! PDF generated. Email will send once Brevo SMTP is activated.`
             : `Audit complete! PDF generated (email unavailable).`,
         data: {
-          url: url,
+          url: normalizedUrl,
           email: email,
           overallScore: finalResults.overallScore,
           overallStatus: finalResults.overallStatus,
