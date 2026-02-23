@@ -62,10 +62,11 @@ class HTMLPDFGenerator {
           "--single-process",
           "--no-first-run",
         ],
-        executablePath:
-          process.env.NODE_ENV === "production"
-            ? "/usr/bin/chromium-browser"
-            : puppeteer.executablePath(),
+        // No executable path for puppeteer
+        // executablePath:
+        //   process.env.NODE_ENV === "production"
+        //     ? "/usr/bin/chromium-browser"
+        //     : puppeteer.executablePath(),
       });
 
       const page = await browser.newPage();
