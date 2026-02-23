@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs_18", "chromium"]
+
+[phases.install]
+cmds = ["npm ci --include=optional"]
+
+[phases.build]
+cmds = []
+
+[start]
+cmd = "node server.js"
