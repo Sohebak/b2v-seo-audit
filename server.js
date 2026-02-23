@@ -22,15 +22,32 @@ app.use(express.urlencoded({ extended: true }));
 // CORS configuration - Allow requests from your WordPress site
 app.use(
   cors({
-    origin: [
-      "https://business2virtual.com",
-      "http://business2virtual.com",
-      "https://www.business2virtual.com",
-      "http://www.business2virtual.com",
-      "http://localhost:3000", // For local testing
-    ],
-    methods: ["POST", "GET"],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      const allowedOrigins = [
+        "https://business2virtual.com",
+        "http://business2virtual.com",
+        "https://www.business2virtual.com",
+        "http://www.business2virtual.com",
+        "http://localhost:3000",
+        "http://vusiness2virtual.hyiwe76sgc-qy3jje5ky3kg.p.temp-site.link",
+        "https://vusiness2virtual.hyiwe76sgc-qy3jje5ky3kg.p.temp-site.link",
+      ];
+
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.includes(".temp-site.link")
+      ) {
+        callback(null, true);
+      } else {
+        console.log("CORS blocked:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["POST", "GET", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
