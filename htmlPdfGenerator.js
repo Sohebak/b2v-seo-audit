@@ -51,7 +51,7 @@ class HTMLPDFGenerator {
       const html = template(templateData);
 
       // Generate PDF using Puppeteer 
-      browser = await puppeteer.launch({
+      let browser = await puppeteer.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath(),
@@ -85,6 +85,9 @@ class HTMLPDFGenerator {
       console.log(`PDF generated successfully: ${filename}`);
       return filepath;
     } catch (error) {
+      if (browser) {
+        await browser.close().catch(() => {});
+      }
       console.error("PDF generation error:", error);
       throw new Error(`Failed to generate PDF: ${error.message}`);
     }
