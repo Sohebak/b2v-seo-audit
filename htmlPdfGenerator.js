@@ -65,7 +65,7 @@ class HTMLPDFGenerator {
       });
 
       // Wait for fonts/styles to settle
-      await page.waitForTimeout(1500).catch(() => {});
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       await page.pdf({
         path: filepath,

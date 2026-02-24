@@ -49,7 +49,7 @@ class SEOAuditor {
       });
 
       // Give JS a moment to render, but cap it at 3 s
-      await page.waitForTimeout(3000).catch(() => {});
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       const loadTime = Date.now() - startTime;
 
