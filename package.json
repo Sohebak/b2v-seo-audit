@@ -8,8 +8,8 @@
     "dev": "nodemon server.js"
   },
   "engines": {
-  "node": ">=20.0.0"
-},
+    "node": ">=20.0.0"
+  },
   "keywords": [
     "seo",
     "audit",
@@ -22,7 +22,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express-validator": "^7.0.1",
-    "puppeteer": "^21.6.1",
+    "puppeteer": "^22.0.0",
+    "@sparticuz/chromium": "^123.0.1",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "pdfkit": "^0.13.0",

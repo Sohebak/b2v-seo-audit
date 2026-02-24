@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
+const chromium = require("@sparticuz/chromium");
 
 class HTMLPDFGenerator {
   constructor(auditResults, recipientEmail) {
@@ -49,24 +50,12 @@ class HTMLPDFGenerator {
       const template = Handlebars.compile(templateSource);
       const html = template(templateData);
 
-      // Generate PDF using Puppeteer — optimized for Render
-      const browser = await puppeteer.launch({
-        headless: "new",
-        args: [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-gpu",
-          "--disable-software-rasterizer",
-          "--disable-extensions",
-          "--single-process",
-          "--no-first-run",
-        ],
-        // No executable path for puppeteer
-        // executablePath:
-        //   process.env.NODE_ENV === "production"
-        //     ? "/usr/bin/chromium-browser"
-        //     : puppeteer.executablePath(),
+      // Generate PDF using Puppeteer 
+      browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
       });
 
       const page = await browser.newPage();

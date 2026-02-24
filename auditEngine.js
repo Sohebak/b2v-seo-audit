@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer");
 const axios = require("axios");
 const cheerio = require("cheerio");
+const chromium = require("@sparticuz/chromium");
 
 class SEOAuditor {
   constructor(url) {
@@ -23,17 +24,10 @@ class SEOAuditor {
 
       // Launch browser — args tuned for Render / cloud environments
       browser = await puppeteer.launch({
-        headless: "new",
-        args: [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-gpu",
-          "--no-first-run",
-          "--no-zygote",
-          "--single-process", // Required on Render free tier
-          "--disable-extensions",
-        ],
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
       });
 
       const page = await browser.newPage();
