@@ -166,7 +166,7 @@ Be specific, actionable, and professional. Avoid generic advice.`;
   async getGeminiInsights(prompt) {
     try {
       const response = await this.genAI.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
         contents: prompt,
       });
 
